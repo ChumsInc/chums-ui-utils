@@ -10,7 +10,8 @@
     "clean": "rimraf dist/",
     "compile": "tsc",
     "build": "npm run clean && npm run compile",
-    "version": "auto-changelog -p && git add CHANGELOG.md"
+    "version": "auto-changelog -p && git add CHANGELOG.md",
+    "publish": "npm publish --access public"
   },
   "repository": {
     "type": "git",
