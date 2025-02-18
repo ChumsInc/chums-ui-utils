@@ -10,3 +10,4 @@ export interface ErrorAlert {
     message: string;
     count: number;
 }
+export declare function isErrorAlert(alert: BasicAlert | ErrorAlert): alert is ErrorAlert;

@@ -11,3 +11,7 @@ export interface ErrorAlert {
     message: string;
     count: number;
 }
+
+export function isErrorAlert(alert: BasicAlert|ErrorAlert):alert is ErrorAlert {
+    return (alert as ErrorAlert).id !== undefined;
+}
