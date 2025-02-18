@@ -1,6 +1,6 @@
 {
   "name": "@chumsinc/ui-utils",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "Strongly Typed Utilities for Chums UI",
   "type": "module",
   "main": "./dist/index.js",
