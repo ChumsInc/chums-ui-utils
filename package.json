@@ -30,9 +30,13 @@
   "homepage": "https://github.com/ChumsInc/chums-ui-utils#readme",
   "devDependencies": {
     "@eslint/js": "^9.18.0",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
     "auto-changelog": "^2.4.0",
     "eslint": "^9.18.0",
-    "globals": "^15.14.0",
+    "globals": "^16.3.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "rimraf": "^6.0.1",
     "typescript": "^5.7.3",
     "typescript-eslint": "^8.20.0"
@@ -42,5 +46,12 @@
     "unreleased": true,
     "commitLimit": false,
     "breakingPattern": "BREAKING CHANGE:"
+  },
+  "dependencies": {
+    "react-fast-compare": "^3.2.2"
+  },
+  "peerDependencies": {
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   }
 }
