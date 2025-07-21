@@ -6,3 +6,4 @@ export { commaFormatter } from './utils.js';
 export type { BasicAlert, ErrorAlert } from './alerts.js';
 export type { BarcodeType, BarcodeTypeDigits, BarcodeTypeSplits } from './gtin.js';
 export { barcodeDigits, barcodeSplits, parseCheckDigit, parseUPCA, parseGTINFormat, formatGTIN, couldBeGTIN, trimUPC } from './gtin.js';
+export { default as useIsChanged } from './hooks/useIsChanged.js';
