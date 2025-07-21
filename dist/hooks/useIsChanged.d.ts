@@ -1,1 +1,1 @@
-export default function useIsChanged<T = unknown>(value: T, compareTo: T): boolean;
+export default function useIsChanged<T = unknown>(value: T, compareTo: T, wait?: number): boolean;
