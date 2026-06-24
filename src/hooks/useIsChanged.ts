@@ -1,7 +1,7 @@
 import {useEffect, useRef, useState} from "react";
 import isEqual from "react-fast-compare";
 
-export default function useIsChanged<T = unknown>(value:T, compareTo:T, wait?:number) {
+export function useIsChanged<T = unknown>(value:T, compareTo:T, wait?:number) {
     const [changed, setChanged] = useState(false);
     const timeoutRef = useRef<number|null>(null);
 

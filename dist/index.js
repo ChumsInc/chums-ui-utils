@@ -3,4 +3,5 @@ export { default as LocalStore } from './local-store.js';
 export { default as SessionStore } from './session-store.js';
 export { commaFormatter } from './utils.js';
 export { barcodeDigits, barcodeSplits, parseCheckDigit, parseUPCA, parseGTINFormat, formatGTIN, couldBeGTIN, trimUPC } from './gtin.js';
-export { default as useIsChanged } from './hooks/useIsChanged.js';
+export { useIsChanged } from './hooks/useIsChanged.js';
+export { useDocumentColorScheme } from './hooks/useDocumentColorScheme.js';
