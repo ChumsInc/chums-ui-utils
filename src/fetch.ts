@@ -4,7 +4,7 @@ export type ResponseHandler = <T = unknown>(res: Response) => Promise<T>;
 
 export async function handleJSONResponse<T = unknown>(res:Response):Promise<T|null> {
     if (!res.ok) {
-        const text = await res.text();
+        const text = `Status: ${res.status}; ${res.statusText ?? 'Unknown error'}; ${await res.text()}`;
         return Promise.reject(new Error(text, {cause: {code: res.status, statusText: res.statusText}}));
     }
     try {
@@ -27,7 +27,7 @@ export async function handleJSONResponse<T = unknown>(res:Response):Promise<T|nu
 export async function allowErrorResponseHandler<T = unknown>(res: Response): Promise<T> {
     try {
         if (!res.ok) {
-            const text = res.statusText ?? await res.text();
+            const text = `Status: ${res.status}; ${res.statusText ?? 'Unknown error'}; ${await res.text()}`;
             return Promise.reject(new ChumsError(text, res.url, null, res.status));
         }
         return await res.json() as T;
