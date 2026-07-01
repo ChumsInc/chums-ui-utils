@@ -45,44 +45,62 @@ export async function allowErrorResponseHandler<T = unknown>(res: Response): Pro
 
 
 export async function fetchJSON<T = unknown>(url:string, options:RequestInit = {}, responseHandler?: ResponseHandler):Promise<T|null> {
-    options.headers = new Headers(options.headers);
-    if (!options.method) {
-        options.method = 'GET';
-    }
-    options.headers.append('Accept', 'application/json');
-    if (!options.credentials) {
-        options.credentials = 'same-origin';
-    }
-    if (!!options?.method && ['POST', 'PUT'].includes(options.method.toUpperCase())) {
-        if (!options.headers.get('Content-Type')) {
-            options.headers.set('Content-Type', 'application/json');
+    try {
+        options.headers = new Headers(options.headers);
+        if (!options.method) {
+            options.method = 'GET';
         }
+        options.headers.append('Accept', 'application/json');
+        if (!options.credentials) {
+            options.credentials = 'same-origin';
+        }
+        if (!!options?.method && ['POST', 'PUT'].includes(options.method.toUpperCase())) {
+            if (!options.headers.get('Content-Type')) {
+                options.headers.set('Content-Type', 'application/json');
+            }
+        }
+        const res = await fetch(url, options);
+        if (responseHandler) {
+            return responseHandler<T>(res);
+        }
+        return await handleJSONResponse<T>(res);
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            console.debug("fetchJSON()", err.name, err.message);
+            return Promise.reject(err);
+        }
+        console.debug("fetchJSON()", err);
+        return Promise.reject(new Error('Error in fetchJSON()'));
     }
-    const res = await fetch(url, options);
-    if (responseHandler) {
-        return responseHandler<T>(res);
-    }
-    return await handleJSONResponse<T>(res);
 }
 
 export async function fetchHTML(url:string, options: RequestInit = {}):Promise<string|undefined> {
-    options.headers = new Headers(options.headers);
-    if (!options.method) {
-        options.method = 'GET';
-    }
-    if (!options.credentials) {
-        options.credentials = 'same-origin';
-    }
-    if (!!options?.method && ['POST', 'PUT'].includes(options.method.toUpperCase())) {
-        if (!options.headers.get('Content-Type')) {
-            options.headers.set('Content-Type', 'application/json');
+    try {
+        options.headers = new Headers(options.headers);
+        if (!options.method) {
+            options.method = 'GET';
         }
+        if (!options.credentials) {
+            options.credentials = 'same-origin';
+        }
+        if (!!options?.method && ['POST', 'PUT'].includes(options.method.toUpperCase())) {
+            if (!options.headers.get('Content-Type')) {
+                options.headers.set('Content-Type', 'application/json');
+            }
+        }
+        options.headers = new Headers(options.headers);
+        const res = await fetch(url, options);
+        if (!res.ok) {
+            const text = await res.text();
+            return Promise.reject(new Error(text, {cause: {code: res.status, statusText: res.statusText}}));
+        }
+        return await res.text();
+    } catch(err:unknown) {
+        if (err instanceof Error) {
+            console.debug("fetchHTML()", err.message);
+            return Promise.reject(err);
+        }
+        console.debug("fetchHTML()", err);
+        return Promise.reject(new Error('Error in fetchHTML()'));
     }
-    options.headers = new Headers(options.headers);
-    const res = await fetch(url, options);
-    if (!res.ok) {
-        const text = await res.text();
-        return Promise.reject(new Error(text, {cause: {code: res.status, statusText: res.statusText}}));
-    }
-    return await res.text();
 }
