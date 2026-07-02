@@ -66,6 +66,9 @@ export async function fetchJSON<T = unknown>(url:string, options:RequestInit = {
         return await handleJSONResponse<T>(res);
     } catch(err:unknown) {
         if (err instanceof Error) {
+            if (err.name === 'AbortError') {
+                return null;
+            }
             console.debug("fetchJSON()", err.name, err.message);
             return Promise.reject(err);
         }

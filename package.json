@@ -12,6 +12,14 @@
     "build": "npm run clean && npm run compile",
     "version": "auto-changelog -p && git add CHANGELOG.md"
   },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "development": "./src/index.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ChumsInc/chums-ui-utils.git"
