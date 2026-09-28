@@ -3,9 +3,12 @@ import ChumsError from "./error.js";
 export type ResponseHandler = <T = unknown>(res: Response) => Promise<T>;
 
 export async function handleJSONResponse<T = unknown>(res:Response):Promise<T|null> {
-    if (!res.ok) {
-        const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
-        return Promise.reject(new Error(text, {cause: {code: res.status, statusText: res.statusText}}));
+    if (!res.headers.get('content-type')?.includes('application/json')) {
+        if (!res.ok) {
+            const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
+            return Promise.reject(new Error(text, {cause: {code: res.status, statusText: res.statusText}}));
+        }
+        return await res.text() as T;
     }
     try {
         const json = await res.json() ;
@@ -26,9 +29,12 @@ export async function handleJSONResponse<T = unknown>(res:Response):Promise<T|nu
 
 export async function allowErrorResponseHandler<T = unknown>(res: Response): Promise<T> {
     try {
-        if (!res.ok) {
-            const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
-            return Promise.reject(new ChumsError(text, res.url, null, res.status));
+        if (!res.headers.get('content-type')?.includes('application/json')) {
+            if (!res.ok) {
+                const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
+                return Promise.reject(new ChumsError(text, res.url, null, res.status));
+            }
+            return await res.text() as T;
         }
         return await res.json() as T;
     } catch (err: unknown) {
@@ -40,7 +46,6 @@ export async function allowErrorResponseHandler<T = unknown>(res: Response): Pro
         return Promise.reject(new Error('Error in allowErrorResponseHandler()'));
     }
 }
-
 
 
 

@@ -1,8 +1,11 @@
 import ChumsError from "./error.js";
 export async function handleJSONResponse(res) {
-    if (!res.ok) {
-        const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
-        return Promise.reject(new Error(text, { cause: { code: res.status, statusText: res.statusText } }));
+    if (!res.headers.get('content-type')?.includes('application/json')) {
+        if (!res.ok) {
+            const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
+            return Promise.reject(new Error(text, { cause: { code: res.status, statusText: res.statusText } }));
+        }
+        return await res.text();
     }
     try {
         const json = await res.json();
@@ -23,9 +26,12 @@ export async function handleJSONResponse(res) {
 }
 export async function allowErrorResponseHandler(res) {
     try {
-        if (!res.ok) {
-            const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
-            return Promise.reject(new ChumsError(text, res.url, null, res.status));
+        if (!res.headers.get('content-type')?.includes('application/json')) {
+            if (!res.ok) {
+                const text = `${res.status} ${res.statusText ?? 'Unknown error'}`;
+                return Promise.reject(new ChumsError(text, res.url, null, res.status));
+            }
+            return await res.text();
         }
         return await res.json();
     }

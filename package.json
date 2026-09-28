@@ -5,7 +5,6 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "src": "./src/index.ts",
   "scripts": {
     "clean": "rimraf dist/",
     "compile": "tsc",
